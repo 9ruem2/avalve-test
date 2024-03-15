@@ -1,0 +1,35 @@
+{
+	"one": {
+		"SmartFarm": {
+			"Manufacturer": "AvalveFarm",
+			"Device_model": "0x41",
+			"Device_owner": "Avalve",
+			"Device_name": "Test02"
+		},
+		"Auth": {
+			"Device_uuid": "f72120b7-634e-4ec1-8a2b-ad46ee6fa726"
+		}
+	},
+	"two": {
+		"SmartFarm": {
+			"Manufacturer": "AvalveFarm",
+			"Model_name": null,
+			"Device_owner": "DoreDore",
+			"Device_name": "Test"
+		},
+		"Auth": {
+			"Device_uuid": "d36b81ef-5910-4d1a-b01d-6a266866e786"
+		}
+	},
+	"three": {
+		"SmartFarm": {
+			"client_type": "AVALVE-FARM",
+			"client_model": "MK-02",
+			"customer_name": "DOREDORE",
+			"client_name": "TEST-01"
+		},
+		"Auth": {
+			"uuid": null
+		}
+	}
+}
