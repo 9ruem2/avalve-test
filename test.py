@@ -34,37 +34,26 @@ def connect_error(err):
 @sio.event
 def upload_start(msg):
     
-    # upload_start HEAD REQEUST
-    # head_response = requests.head('http://localhost:3000', headers={"device_owner" : "Avalve", "device_name": "Test01","status" : "upload_start","token" : msg})
-    head_response = requests.head('http://localhost:3000/upload/upload_status', headers={"device_owner" : "Avalve", "device_name": "eunhee","status" : "upload_start","token" : msg})
+    head_response = requests.head('http://localhost:3000/uploads/status', headers={"device_owner" : "Avalve", "device_name": "eunhee","status" : "upload_start","token" : msg})
     
     print(head_response)
 
 
-    # headers = {"device_owner" : "Avalve", "device_name": "Test01", "token" : msg}
+    # secondHeaders = {"device_owner" : "Avalve", "device_name": "eunhee", "token" : msg}
 
-    # # # json_list = os.listdir(os.path.join(os.getcwd()+jsonDir))
-    # # # json_files = getFilesList(json_list,json_type,jsonDir)
-    # # # json_response = requests.post(url2,files=json_files,headers=headers)
+    # json_list = os.listdir(os.path.join(os.getcwd()+jsonDir))
+    # json_files = getFilesList(json_list,json_type,jsonDir)
+    # json_response = requests.post(url2,files=json_files,headers=secondHeaders)
     
     # image_list = os.listdir(os.path.join(os.getcwd()+imageDir))
-    # image_files= getFilesList(image_list,img_type,imageDir)
-    # # image_response = requests.post(url1,files=[('file', (image_files, os.path.join(os.getcwd()+imageDir+'/'+str(value)),'rb'))],headers=headers)
     # for value in image_list:   
-    #     image_response = requests.post(url1,files=[('file', (value, os.path.join(os.getcwd()+imageDir+'/'+str(value)),'rb'))],headers=headers)
+    #     image_response = requests.post(url1,files=[('imageFile', (value, os.path.join(os.getcwd()+imageDir+'/'+str(value)),'rb'))],headers=secondHeaders)
     #     print(image_response.text)
     
-    # # # upload_finish HEAD REQEUST
-    # head_response = requests.head('http://localhost:3000', headers={"device_owner" : "Avalve", "device_name": "Test01", "status" : "upload_finish","token" : msg})
+    # # upload_finish HEAD REQEUST
+    # head_response = requests.head('http://localhost:3000/upload/status', headers={"device_owner" : "Avalve", "device_name": "eunhee", "status" : "upload_finish","token" : msg})
     
     print(msg)
-
-    
-    
-    # print(json_response.text)
-    
-    # shutil function
-    
 
 def configs():
     global file_path, num
@@ -87,8 +76,8 @@ def configs():
     Device_uuid = config[num]['Auth']['Device_uuid']
    
     
-    url1 = 'http://3.38.140.149:3000/upload/image/2.1'
-    # url2 = 'http://13.125.137.169:9999/upload/json'
+    url1 = 'http://localhost:3000/upload/image'
+    url2 = 'http://localhost:3000/upload/json'
     # url3 = 'https://avalve-smartfarm.tk:8888/reset'
 
     imageDir = '/image'
@@ -96,17 +85,12 @@ def configs():
     img_type = 'image/jpg'
     json_type = 'application/json'
 
-def writeuuidInfo(file_path, new_uuid):
-    config[num]['Auth']['Device_uuid'] = new_uuid
-    with open(file_path, "w") as f:
-         json.dump(config, f, indent="\t")
 
 def getFilesList(some_list,some_type,dir):
     new_list = []
-    for key,row in enumerate(some_list):
-        # print(os.getcwd()+dir+'/'+str(row) , 'Image Path')
+    for row in enumerate(some_list):
         new_list.append((
-            'file',
+            'jsonFile',
             (row,open(os.path.join(os.getcwd()+dir+'/'+str(row)),'rb'),some_type)
         ))
     return new_list
