@@ -39,19 +39,25 @@ def upload_start(msg):
     print(head_response)
 
 
-    # secondHeaders = {"device_owner" : "Avalve", "device_name": "eunhee", "token" : msg}
+    secondHeaders = {"device_owner" : "Avalve", "device_name": "eunhee", "token" : msg}
 
-    # json_list = os.listdir(os.path.join(os.getcwd()+jsonDir))
-    # json_files = getFilesList(json_list,json_type,jsonDir)
-    # json_response = requests.post(url2,files=json_files,headers=secondHeaders)
+# json파일 리스트를 서버로 post요청
+    json_list = os.listdir(os.path.join(os.getcwd(), jsonDir))
+    json_files = getFilesList(json_list,json_type,jsonDir)
+    requests.post(url2,files=json_files,headers=secondHeaders)
     
-    # image_list = os.listdir(os.path.join(os.getcwd()+imageDir))
-    # for value in image_list:   
-    #     image_response = requests.post(url1,files=[('imageFile', (value, os.path.join(os.getcwd()+imageDir+'/'+str(value)),'rb'))],headers=secondHeaders)
-    #     print(image_response.text)
+# 이미지 리스트를 서버로 post요청
+    image_list = os.listdir(os.path.join(os.getcwd(), imageDir))
+    for filename in image_list:
+        file_path = os.path.join(os.getcwd(), imageDir, filename)
+        with open(file_path, 'rb') as file:
+            image_files = {'imageFile': (filename, file, img_type)}
+            image_response = requests.post(url1, files=image_files, headers=secondHeaders)
+            print(image_response.text)
+
     
-    # # upload_finish HEAD REQEUST
-    # head_response = requests.head('http://localhost:3000/upload/status', headers={"device_owner" : "Avalve", "device_name": "eunhee", "status" : "upload_finish","token" : msg})
+    # upload_finish HEAD REQEUST
+    head_response = requests.head('http://localhost:3000/uploads/status', headers={"device_owner" : "Avalve", "device_name": "eunhee", "status" : "upload_finish","token" : msg})
     
     print(msg)
 
@@ -76,23 +82,31 @@ def configs():
     Device_uuid = config[num]['Auth']['Device_uuid']
    
     
-    url1 = 'http://localhost:3000/upload/image'
-    url2 = 'http://localhost:3000/upload/json'
-    # url3 = 'https://avalve-smartfarm.tk:8888/reset'
+    url1 = 'http://localhost:3000/uploads/image'
+    url2 = 'http://localhost:3000/uploads/json'
 
-    imageDir = '/image'
-    jsonDir = '/json'
+    imageDir = 'image'
+    jsonDir = 'json'
     img_type = 'image/jpg'
     json_type = 'application/json'
 
 
-def getFilesList(some_list,some_type,dir):
+# def getFilesList(some_list,some_type,dir):
+#     new_list = []
+#     for key, row in enumerate(some_list):
+#         new_list.append((
+#             'jsonFile',
+#             (row,open(os.path.join(os.getcwd()+dir+'/'+str(row)),'rb'),some_type)
+#         ))
+#     return new_list
+
+def getFilesList(some_list, some_type, directory):
     new_list = []
-    for row in enumerate(some_list):
-        new_list.append((
-            'jsonFile',
-            (row,open(os.path.join(os.getcwd()+dir+'/'+str(row)),'rb'),some_type)
-        ))
+    for filename in some_list:
+        file_path = os.path.join(os.getcwd(), directory, filename)
+        with open(file_path, 'rb') as file:
+            file_content = file.read()
+        new_list.append(('jsonFile', (filename, file_content, some_type)))
     return new_list
 
 def send_msg_start():
