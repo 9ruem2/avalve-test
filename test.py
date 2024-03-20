@@ -44,7 +44,8 @@ def upload_start(msg):
 # json파일 리스트를 서버로 post요청
     json_list = os.listdir(os.path.join(os.getcwd(), jsonDir))
     json_files = getFilesList(json_list,json_type,jsonDir)
-    requests.post(url2,files=json_files,headers=secondHeaders)
+    json_response = requests.post(url2,files=json_files,headers=secondHeaders)
+    print(json_response)
     
 # 이미지 리스트를 서버로 post요청
     image_list = os.listdir(os.path.join(os.getcwd(), imageDir))
